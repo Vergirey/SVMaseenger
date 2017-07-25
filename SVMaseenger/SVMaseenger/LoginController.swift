@@ -160,6 +160,10 @@ class LoginController: UIViewController {
         // change height of nameTextField
         nameTextFieldHeightAncor?.isActive = false
         nameTextFieldHeightAncor = nameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 0 : 1/3)
+        
+        // nameTextField hidden if loginRegisterSegmentedControl == "Login"
+        nameTextField.isHidden = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? true : false
+        
         nameTextFieldHeightAncor?.isActive = true
         
         emailTextFieldHeightAncor?.isActive = false
