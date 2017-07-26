@@ -58,38 +58,7 @@ class LoginController: UIViewController {
         })
     }
     
-    func handleRegister() {
-        guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else {
-            print("Forms is not valid")
-            return
-        }
-        
-        FIRAuth.auth()?.createUser(withEmail: email, password: password) { (user, error) in
-            if error != nil {
-                print(error!)
-                return
-            }
-            
-            guard let uid = user?.uid else {
-                return
-            }
-            
-            // succesfully authenticated user
-            let ref = FIRDatabase.database().reference(fromURL: "https://svmassenger.firebaseio.com/")
-            let usersReference = ref.child("users").child(uid)
-            let values = ["name": name, "email": email]
-            usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
-                
-                if err != nil {
-                    print(err!)
-                    return
-                }
-                
-                self.dismiss(animated: true, completion: nil)
-            })
-        
-        }
-    }
+    
     
     let nameTextField: UITextField = {
         let tf = UITextField()
@@ -132,16 +101,19 @@ class LoginController: UIViewController {
         return tf
     }()
     
-    let profileImageView: UIImageView = {
+    lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "male")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectorProfileImageView)))
+        imageView.isUserInteractionEnabled = true
+        
         return imageView
     }()
     
-    let loginRegisterSegmentedControl: UISegmentedControl = {
+    lazy var loginRegisterSegmentedControl: UISegmentedControl = {
         let sc = UISegmentedControl(items: ["Login", "Register"])
         sc.translatesAutoresizingMaskIntoConstraints = false
         sc.tintColor = UIColor.white

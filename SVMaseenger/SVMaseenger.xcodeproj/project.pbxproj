@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5812ABB01F28A0D600249A10 /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5812ABAF1F28A0D600249A10 /* LoginController+handlers.swift */; };
 		584643E51F2690CD0003C6D4 /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584643E41F2690CD0003C6D4 /* NewMessageController.swift */; };
 		584643E81F26A3B20003C6D4 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584643E71F26A3B20003C6D4 /* User.swift */; };
 		58886B271F224A7C0088F31F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58886B261F224A7C0088F31F /* AppDelegate.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5812ABAF1F28A0D600249A10 /* LoginController+handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
 		584643E41F2690CD0003C6D4 /* NewMessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		584643E71F26A3B20003C6D4 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		58886B231F224A7C0088F31F /* SVMaseenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SVMaseenger.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,6 +105,7 @@
 				58886B391F2250790088F31F /* LoginController.swift */,
 				58886B281F224A7C0088F31F /* MessagesController.swift */,
 				584643E41F2690CD0003C6D4 /* NewMessageController.swift */,
+				5812ABAF1F28A0D600249A10 /* LoginController+handlers.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -243,6 +246,7 @@
 			files = (
 				584643E51F2690CD0003C6D4 /* NewMessageController.swift in Sources */,
 				58886B291F224A7C0088F31F /* MessagesController.swift in Sources */,
+				5812ABB01F28A0D600249A10 /* LoginController+handlers.swift in Sources */,
 				58886B3A1F2250790088F31F /* LoginController.swift in Sources */,
 				584643E81F26A3B20003C6D4 /* User.swift in Sources */,
 				58886B271F224A7C0088F31F /* AppDelegate.swift in Sources */,
