@@ -29,9 +29,12 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             
             // succesfully authenticated user
             let imageName = NSUUID().uuidString
-            let storageRef = FIRStorage.storage().reference().child("profile_images").child("\(imageName).png")
+            let storageRef = FIRStorage.storage().reference().child("profile_images").child("\(imageName).jpg")
             
-            if let uploadData = UIImagePNGRepresentation(self.profileImageView.image!) {
+            if let profileImage = self.profileImageView.image, let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
+                
+
+//            if let uploadData = UIImagePNGRepresentation(self.profileImageView.image!) {
                 storageRef.put(uploadData, metadata: nil, completion: { (metadata, error) in
                     if error != nil {
                         print(error!)
@@ -57,20 +60,23 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
                     return
                 }
                 
+//                self.messagesController?.fetchUserAndSetupNavBarTitle()
+//                self.messagesController?.navigationItem.title = values["name"] as? String
+                let user = User()
+                // this setter potentiale crashes if keys don't match
+                user.setValuesForKeys(values)
+                self.messagesController?.setupNavBarWithUser(user: user)
+                
                 self.dismiss(animated: true, completion: nil)
             })
     }
-    
-    
-    
-    
     func handleSelectorProfileImageView() {
         let picker = UIImagePickerController()
         
         picker.delegate = self
         picker.allowsEditing = true
-//        picker.sourceType = .photoLibrary
-        
+
+        //        picker.sourceType = .photoLibrary
         present(picker, animated: true, completion: nil)
     }
     
@@ -83,7 +89,6 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
             selectedImageFromPicker = originalImage
         }
-        
         if let selectedImage = selectedImageFromPicker {
             profileImageView.image = selectedImage
         }
