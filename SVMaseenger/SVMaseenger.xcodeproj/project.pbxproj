@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5805314E1F421DFC00C3C7F6 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5805314D1F421DFC00C3C7F6 /* ChatMessageCell.swift */; };
 		5812ABB01F28A0D600249A10 /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5812ABAF1F28A0D600249A10 /* LoginController+handlers.swift */; };
 		5812ABB31F2903BD00249A10 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5812ABB21F2903BD00249A10 /* Extensions.swift */; };
 		5812ABB51F2A49C000249A10 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5812ABB41F2A49BF00249A10 /* ChatLogController.swift */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5805314D1F421DFC00C3C7F6 /* ChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		5812ABAF1F28A0D600249A10 /* LoginController+handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
 		5812ABB21F2903BD00249A10 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		5812ABB41F2A49BF00249A10 /* ChatLogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				582547691F2B804200473D80 /* UserCell.swift */,
+				5805314D1F421DFC00C3C7F6 /* ChatMessageCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				5812ABB01F28A0D600249A10 /* LoginController+handlers.swift in Sources */,
 				58886B3A1F2250790088F31F /* LoginController.swift in Sources */,
 				584643E81F26A3B20003C6D4 /* User.swift in Sources */,
+				5805314E1F421DFC00C3C7F6 /* ChatMessageCell.swift in Sources */,
 				58886B271F224A7C0088F31F /* AppDelegate.swift in Sources */,
 				5825476A1F2B804200473D80 /* UserCell.swift in Sources */,
 				5812ABB31F2903BD00249A10 /* Extensions.swift in Sources */,
