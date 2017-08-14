@@ -11,6 +11,7 @@
 		5812ABB31F2903BD00249A10 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5812ABB21F2903BD00249A10 /* Extensions.swift */; };
 		5812ABB51F2A49C000249A10 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5812ABB41F2A49BF00249A10 /* ChatLogController.swift */; };
 		5812ABB71F2A86B700249A10 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5812ABB61F2A86B700249A10 /* Message.swift */; };
+		5825476A1F2B804200473D80 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582547691F2B804200473D80 /* UserCell.swift */; };
 		584643E51F2690CD0003C6D4 /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584643E41F2690CD0003C6D4 /* NewMessageController.swift */; };
 		584643E81F26A3B20003C6D4 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584643E71F26A3B20003C6D4 /* User.swift */; };
 		58886B271F224A7C0088F31F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58886B261F224A7C0088F31F /* AppDelegate.swift */; };
@@ -28,6 +29,7 @@
 		5812ABB21F2903BD00249A10 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		5812ABB41F2A49BF00249A10 /* ChatLogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		5812ABB61F2A86B700249A10 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		582547691F2B804200473D80 /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		584643E41F2690CD0003C6D4 /* NewMessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		584643E71F26A3B20003C6D4 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		58886B231F224A7C0088F31F /* SVMaseenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SVMaseenger.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -72,6 +74,14 @@
 			name = Helpers;
 			sourceTree = "<group>";
 		};
+		582547681F2B7FE200473D80 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				582547691F2B804200473D80 /* UserCell.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		584643E61F26A34D0003C6D4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +94,7 @@
 		58886B1A1F224A7B0088F31F = {
 			isa = PBXGroup;
 			children = (
+				582547681F2B7FE200473D80 /* View */,
 				5812ABB11F29037800249A10 /* Helpers */,
 				58886B251F224A7C0088F31F /* SVMaseenger */,
 				58886B241F224A7C0088F31F /* Products */,
@@ -269,6 +280,7 @@
 				58886B3A1F2250790088F31F /* LoginController.swift in Sources */,
 				584643E81F26A3B20003C6D4 /* User.swift in Sources */,
 				58886B271F224A7C0088F31F /* AppDelegate.swift in Sources */,
+				5825476A1F2B804200473D80 /* UserCell.swift in Sources */,
 				5812ABB31F2903BD00249A10 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

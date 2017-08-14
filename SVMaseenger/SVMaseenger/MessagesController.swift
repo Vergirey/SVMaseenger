@@ -11,20 +11,26 @@ import Firebase
 
 class MessagesController: UITableViewController {
     
+    let cellId = "cellId"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         
         let image = UIImage(named: "new_message_icon")
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleNewMessage))
         
         checkIfUserLoggedIn()
+        
+        tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
         observeMessages()
     }
     
     var messages = [Message]()
+    var messagesDictionary = [String: Message]()
     
     func observeMessages() {
         let ref = FIRDatabase.database().reference().child("messages")
@@ -32,7 +38,17 @@ class MessagesController: UITableViewController {
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let message = Message()
                 message.setValuesForKeys(dictionary)
-                self.messages.append(message)
+//                self.messages.append(message)
+                
+                if let toId = message.toId {
+                    self.messagesDictionary[toId] = message
+                    
+                    self.messages = Array(self.messagesDictionary.values)
+                    self.messages.sort(by: { (message1,message2) -> Bool in
+                    
+                    return (message1.timestamp?.intValue)! > (message2.timestamp?.intValue)!
+                    })
+                }
                 
                 DispatchQueue.main.async(execute: {
                     self.tableView.reloadData()
@@ -46,17 +62,18 @@ class MessagesController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cellId")
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
         let message = messages[indexPath.row]
-        cell.textLabel?.text = message.toId
-        cell.detailTextLabel?.text = message.text
+        cell.message = message
         
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 72
+    }
+    
     func handleNewMessage() {
-        
         let newMessageController = NewMessageController()
         newMessageController.messagesController = self
         let navController = UINavigationController(rootViewController: newMessageController)
@@ -90,7 +107,6 @@ class MessagesController: UITableViewController {
     func setupNavBarWithUser(user: User) {
         let titleView = UIView()
         titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
-        //        titleView.backgroundColor = UIColor.red
         
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -119,6 +135,7 @@ class MessagesController: UITableViewController {
         containerView.addSubview(nameLabel)
         nameLabel.text = user.name
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         // need x,y,wight, height anchors
         nameLabel.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 8).isActive = true
         nameLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
@@ -128,10 +145,7 @@ class MessagesController: UITableViewController {
         containerView.centerXAnchor.constraint(equalTo: titleView.centerXAnchor).isActive = true
         containerView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor).isActive = true
         
-        
         self.navigationItem.titleView = titleView
-        
-        //        titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showChatController)))
     }
     
     func showChatControllerForUser(user: User) {

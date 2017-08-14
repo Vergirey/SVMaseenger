@@ -14,6 +14,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
     var user: User? {
         didSet {
             navigationItem.title = user?.name
+            
         }
     }
     
@@ -50,6 +51,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         sendButton.setTitle("Send", for: .normal)
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         sendButton.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
+        
         containerView.addSubview(sendButton)
         
         // need x,y,widht, height anchors
@@ -58,9 +60,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         sendButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
         sendButton.widthAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
         
-//        let inputTextField = UITextField()
-//        inputTextField.placeholder = "Enter message..."
-//        inputTextField.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(inputTextField)
         
         // need x,y,w,h anchor
@@ -72,6 +71,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         let separatorLineView = UIView()
         separatorLineView.backgroundColor = UIColor(r: 220, g: 220, b: 220)
         separatorLineView.translatesAutoresizingMaskIntoConstraints = false
+        
         containerView.addSubview(separatorLineView)
         
         // need x,y,w,h anchor

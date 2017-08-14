@@ -55,12 +55,9 @@ class LoginController: UIViewController {
             }
             // successfully logged in our user
             self.messagesController?.fetchUserAndSetupNavBarTitle()
-            
             self.dismiss(animated: true, completion: nil)
         })
     }
-    
-    
     
     let nameTextField: UITextField = {
         let tf = UITextField()
@@ -77,7 +74,7 @@ class LoginController: UIViewController {
         
         return view
     }()
-
+    
     let emailTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Email"
@@ -108,7 +105,6 @@ class LoginController: UIViewController {
         imageView.image = UIImage(named: "male")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
-        
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectorProfileImageView)))
         imageView.isUserInteractionEnabled = true
         
@@ -121,6 +117,7 @@ class LoginController: UIViewController {
         sc.tintColor = UIColor.white
         sc.selectedSegmentIndex = 1
         sc.addTarget(self, action: #selector(handleLoginRegisterChange), for: .valueChanged)
+        
         return sc
     }()
     
@@ -151,7 +148,7 @@ class LoginController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         
         view.addSubview(inputsContainerView)
@@ -229,7 +226,6 @@ class LoginController: UIViewController {
         emailSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         // need x, y, wight, height constraints
-        
         passwordTextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
         passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor).isActive = true
         passwordTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
@@ -252,7 +248,6 @@ class LoginController: UIViewController {
 }
 
 extension UIColor {
-    
     convenience init(r: CGFloat, g: CGFloat, b: CGFloat) {
         self.init(red: 61/255, green: 91/255, blue: 151/255, alpha: 1)
     }

@@ -14,7 +14,7 @@ class NewMessageController: UITableViewController {
     let cellId = "cellId"
     
     var users = [User]()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,22 +27,19 @@ class NewMessageController: UITableViewController {
     
     func fetchUser() {
         FIRDatabase.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
-            
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let user = User()
                 print(snapshot.key)
                 user.id = snapshot.key
                 
-//                if you use this setter, your app will crash, if your class properties dont's exactly match up qwith tge firebase dictionary keys
+                //                if you use this setter, your app will crash, if your class properties dont's exactly match up qwith tge firebase dictionary keys
                 user.setValuesForKeys(dictionary)
                 self.users.append(user)
                 
-//                this will crash because of background thread, so lets use dispetch_async to fix
+                //                this will crash because of background thread, so lets use dispetch_async to fix
                 DispatchQueue.main.async(execute: {
                     self.tableView.reloadData()
                 })
-                
-//                user.name = dictionary["name"]
             }
         }, withCancel: nil)
     }
@@ -63,22 +60,8 @@ class NewMessageController: UITableViewController {
         cell?.detailTextLabel?.text = user.email
         
         if let profileImageUrl = user.profileImageUrl {
-            
             cell?.profileImageView.loadImageUsingCasheWithUrlString(urlString: profileImageUrl)
-//            let url = URL(string: profileImageUrl)
-//            URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
-//                
-//                // download hit an error so lets out
-//                if error != nil {
-//                    print(error!)
-//                    return
-//                }
-//                DispatchQueue.main.async(execute: {
-//                    cell?.profileImageView.image = UIImage(data: data!)
-//                })
-//            }).resume()
         }
-        
         return cell!
     }
     
@@ -94,42 +77,5 @@ class NewMessageController: UITableViewController {
             let user = self.users[indexPath.row]
             self.messagesController?.showChatControllerForUser(user: user)
         }
-    }
-}
-
-class UserCell: UITableViewCell {
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        textLabel?.frame = CGRect(origin: CGPoint(x: 64, y: textLabel!.frame.origin.y - 2), size: CGSize(width: textLabel!.frame.width, height: textLabel!.frame.height))
-        
-        detailTextLabel?.frame = CGRect(origin: CGPoint(x: 64, y: detailTextLabel!.frame.origin.y + 2), size: CGSize(width: detailTextLabel!.frame.width, height: detailTextLabel!.frame.height))
-    }
-    let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "male")
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 24
-        imageView.layer.masksToBounds = true
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }()
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
-        
-        addSubview(profileImageView)
-        
-        // ios 9 constrain anchors
-        //need x, y, wight,height anchors
-        profileImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
-        profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        profileImageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
-        profileImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
-        
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

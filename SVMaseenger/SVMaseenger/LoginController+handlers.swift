@@ -33,8 +33,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             
             if let profileImage = self.profileImageView.image, let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
                 
-
-//            if let uploadData = UIImagePNGRepresentation(self.profileImageView.image!) {
+                //            if let uploadData = UIImagePNGRepresentation(self.profileImageView.image!) {
                 storageRef.put(uploadData, metadata: nil, completion: { (metadata, error) in
                     if error != nil {
                         print(error!)
@@ -50,33 +49,30 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     }
     
     private func registerUserIntoDatabaseWithUID(uid: String, values: [String: AnyObject]) {
-            let ref = FIRDatabase.database().reference(fromURL: "https://svmassenger.firebaseio.com/")
-            let usersReference = ref.child("users").child(uid)
-//            let values = ["name": name, "email": email, "profileImageUrl": metadata.downloadUrl()]
-            usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
-                
-                if err != nil {
-                    print(err!)
-                    return
-                }
-                
-//                self.messagesController?.fetchUserAndSetupNavBarTitle()
-//                self.messagesController?.navigationItem.title = values["name"] as? String
-                let user = User()
-                // this setter potentiale crashes if keys don't match
-                user.setValuesForKeys(values)
-                self.messagesController?.setupNavBarWithUser(user: user)
-                
-                self.dismiss(animated: true, completion: nil)
-            })
+        let ref = FIRDatabase.database().reference()
+        let usersReference = ref.child("users").child(uid)
+        //            let values = ["name": name, "email": email, "profileImageUrl": metadata.downloadUrl()]
+        usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
+            
+            if err != nil {
+                print(err!)
+                return
+            }
+            
+            let user = User()
+            // this setter potentiale crashes if keys don't match
+            user.setValuesForKeys(values)
+            self.messagesController?.setupNavBarWithUser(user: user)
+            
+            self.dismiss(animated: true, completion: nil)
+        })
     }
     func handleSelectorProfileImageView() {
         let picker = UIImagePickerController()
         
         picker.delegate = self
         picker.allowsEditing = true
-
-        //        picker.sourceType = .photoLibrary
+        
         present(picker, animated: true, completion: nil)
     }
     
