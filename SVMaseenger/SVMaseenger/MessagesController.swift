@@ -60,9 +60,10 @@ class MessagesController: UITableViewController {
                         })
                     }
                     
-                    DispatchQueue.main.async(execute: {
-                        self.tableView.reloadData()
-                    })
+                    self.timer?.invalidate()
+                    print("we just canceled our timer")
+                    self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
+                     print("shedule a table reload in 0.1 sec")
                 }
                 
             }, withCancel: nil)
@@ -70,6 +71,17 @@ class MessagesController: UITableViewController {
         }, withCancel: nil)
     }
     
+    var timer: Timer?
+    
+    func handleReloadTable() {
+        // this will crash because of background thread, so lets call this on DispatchQueue.main.async thread
+        DispatchQueue.main.async(execute: {
+            print("we reloded table")
+            self.tableView.reloadData()
+        })
+    }
+    
+   /*
     func observeMessages() {
         let ref = FIRDatabase.database().reference().child("messages")
         ref.observe(.childAdded, with: { (snapshot) in
@@ -93,6 +105,7 @@ class MessagesController: UITableViewController {
             }
         })
     }
+ */
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
