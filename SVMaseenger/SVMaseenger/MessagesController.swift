@@ -17,10 +17,12 @@ class MessagesController: UITableViewController {
         super.viewDidLoad()
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        navigationItem.leftBarButtonItem?.tintColor = UIColor.black
         
         let image = UIImage(named: "new_message_icon")
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleNewMessage))
+        navigationItem.rightBarButtonItem?.tintColor = UIColor.black
         
         checkIfUserLoggedIn()
         

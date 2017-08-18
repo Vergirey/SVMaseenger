@@ -11,6 +11,7 @@ import Firebase
 
 class NewMessageController: UITableViewController {
     
+    
     let cellId = "cellId"
     
     var users = [User]()
@@ -19,6 +20,7 @@ class NewMessageController: UITableViewController {
         super.viewDidLoad()
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
+        navigationItem.leftBarButtonItem?.tintColor = UIColor.black
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
