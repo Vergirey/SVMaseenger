@@ -175,7 +175,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 if let imageUrl = metadata?.downloadURL()?.absoluteString {
                     self.sendMessageWithImageUrl(imageUrl: imageUrl)
                 }
-                
             })
         }
     }

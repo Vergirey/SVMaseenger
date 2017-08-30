@@ -27,9 +27,6 @@ class MessagesController: UITableViewController {
         checkIfUserLoggedIn()
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
-        
-        //        observeMessages()
-        
     }
     
     var messages = [Message]()
@@ -90,32 +87,6 @@ class MessagesController: UITableViewController {
             self.tableView.reloadData()
         })
     }
-    
-    /*
-     func observeMessages() {
-     let ref = FIRDatabase.database().reference().child("messages")
-     ref.observe(.childAdded, with: { (snapshot) in
-     if let dictionary = snapshot.value as? [String: AnyObject] {
-     let message = Message()
-     message.setValuesForKeys(dictionary)
-     
-     if let toId = message.toId {
-     self.messagesDictionary[toId] = message
-     
-     self.messages = Array(self.messagesDictionary.values)
-     self.messages.sort(by: { (message1,message2) -> Bool in
-     
-     return (message1.timestamp?.intValue)! > (message2.timestamp?.intValue)!
-     })
-     }
-     
-     DispatchQueue.main.async(execute: {
-     self.tableView.reloadData()
-     })
-     }
-     })
-     }
-     */
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count

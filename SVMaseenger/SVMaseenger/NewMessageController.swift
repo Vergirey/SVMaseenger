@@ -11,7 +11,6 @@ import Firebase
 
 class NewMessageController: UITableViewController {
     
-    
     let cellId = "cellId"
     
     var users = [User]()

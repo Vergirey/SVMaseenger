@@ -15,6 +15,7 @@
 		5825476A1F2B804200473D80 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582547691F2B804200473D80 /* UserCell.swift */; };
 		584643E51F2690CD0003C6D4 /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584643E41F2690CD0003C6D4 /* NewMessageController.swift */; };
 		584643E81F26A3B20003C6D4 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584643E71F26A3B20003C6D4 /* User.swift */; };
+		587EA2631F51862A009539B5 /* FaceBookLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587EA2621F51862A009539B5 /* FaceBookLoginViewController.swift */; };
 		58886B271F224A7C0088F31F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58886B261F224A7C0088F31F /* AppDelegate.swift */; };
 		58886B291F224A7C0088F31F /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58886B281F224A7C0088F31F /* MessagesController.swift */; };
 		58886B2C1F224A7C0088F31F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58886B2A1F224A7C0088F31F /* Main.storyboard */; };
@@ -34,6 +35,7 @@
 		582547691F2B804200473D80 /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		584643E41F2690CD0003C6D4 /* NewMessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		584643E71F26A3B20003C6D4 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		587EA2621F51862A009539B5 /* FaceBookLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceBookLoginViewController.swift; sourceTree = "<group>"; };
 		58886B231F224A7C0088F31F /* SVMaseenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SVMaseenger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		58886B261F224A7C0088F31F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		58886B281F224A7C0088F31F /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				58886B391F2250790088F31F /* LoginController.swift */,
+				587EA2621F51862A009539B5 /* FaceBookLoginViewController.swift */,
 				58886B281F224A7C0088F31F /* MessagesController.swift */,
 				584643E41F2690CD0003C6D4 /* NewMessageController.swift */,
 				5812ABAF1F28A0D600249A10 /* LoginController+handlers.swift */,
@@ -281,6 +284,7 @@
 				5812ABB71F2A86B700249A10 /* Message.swift in Sources */,
 				5812ABB01F28A0D600249A10 /* LoginController+handlers.swift in Sources */,
 				58886B3A1F2250790088F31F /* LoginController.swift in Sources */,
+				587EA2631F51862A009539B5 /* FaceBookLoginViewController.swift in Sources */,
 				584643E81F26A3B20003C6D4 /* User.swift in Sources */,
 				5805314E1F421DFC00C3C7F6 /* ChatMessageCell.swift in Sources */,
 				58886B271F224A7C0088F31F /* AppDelegate.swift in Sources */,

@@ -8,10 +8,19 @@
 
 import UIKit
 import Firebase
+import FacebookLogin
+import FacebookCore
 
 class LoginController: UIViewController {
     
     var messagesController: MessagesController?
+    
+    var inputContainerViewHightAncor: NSLayoutConstraint?
+    var nameTextFieldHeightAncor: NSLayoutConstraint?
+    var emailTextFieldHeightAncor: NSLayoutConstraint?
+    var passwordTextFieldHeightAncor: NSLayoutConstraint?
+    
+    let user = User()
     
     let inputsContainerView: UIView = {
         let view = UIView()
@@ -35,29 +44,19 @@ class LoginController: UIViewController {
         return button
     }()
     
-    func handleLoginRegister() {
-        if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
-            handleLogin()
-        } else {
-            handleRegister()
-        }
-    }
+    let faceBookButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = UIColor(red: 80/255, green: 101/255, blue: 161/255, alpha: 1)
+        button.setTitle("FaceBook", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        
+        button.addTarget(self, action: #selector(goToFB), for: .touchUpInside)
+        return button
+    }()
     
-    func handleLogin() {
-        guard let email = emailTextField.text, let password = passwordTextField.text else {
-            print("Forms is not valid")
-            return
-        }
-        FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
-            if error != nil {
-                print(error!)
-                return
-            }
-            // successfully logged in our user
-            self.messagesController?.fetchUserAndSetupNavBarTitle()
-            self.dismiss(animated: true, completion: nil)
-        })
-    }
+    
     
     let nameTextField: UITextField = {
         let tf = UITextField()
@@ -121,6 +120,27 @@ class LoginController: UIViewController {
         return sc
     }()
     
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        
+        view.addSubview(inputsContainerView)
+        view.addSubview(loginRegisterButton)
+        view.addSubview(profileImageView)
+        view.addSubview(loginRegisterSegmentedControl)
+        view.addSubview(faceBookButton)
+        
+        setupInputsContainerView()
+        setupLoginRegisterButton()
+        setupProfileImageView()
+        setupLoginRegisterSegmentedControl()
+        setupfaceBookButton()
+        
+        getMe()
+    }
+    
     func handleLoginRegisterChange() {
         let title = loginRegisterSegmentedControl.titleForSegment(at: (loginRegisterSegmentedControl.selectedSegmentIndex))
         loginRegisterButton.setTitle(title, for: .normal)
@@ -146,22 +166,6 @@ class LoginController: UIViewController {
         passwordTextFieldHeightAncor?.isActive = true
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        
-        view.addSubview(inputsContainerView)
-        view.addSubview(loginRegisterButton)
-        view.addSubview(profileImageView)
-        view.addSubview(loginRegisterSegmentedControl)
-        
-        setupInputsContainerView()
-        setupLoginRegisterButton()
-        setupProfileImageView()
-        setupLoginRegisterSegmentedControl()
-    }
-    
     func setupLoginRegisterSegmentedControl() {
         // need x, y, wight, height constraints
         loginRegisterSegmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -177,11 +181,6 @@ class LoginController: UIViewController {
         profileImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
     }
-    
-    var inputContainerViewHightAncor: NSLayoutConstraint?
-    var nameTextFieldHeightAncor: NSLayoutConstraint?
-    var emailTextFieldHeightAncor: NSLayoutConstraint?
-    var passwordTextFieldHeightAncor: NSLayoutConstraint?
     
     func setupInputsContainerView() {
         // need x, y, wight, height constraints
@@ -240,6 +239,77 @@ class LoginController: UIViewController {
         loginRegisterButton.topAnchor.constraint(equalTo: inputsContainerView.bottomAnchor, constant: 12).isActive = true
         loginRegisterButton.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
         loginRegisterButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+    
+    func setupfaceBookButton() {
+        faceBookButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        faceBookButton.topAnchor.constraint(equalTo: loginRegisterButton.bottomAnchor, constant: 12).isActive = true
+        faceBookButton.widthAnchor.constraint(equalTo: loginRegisterButton.widthAnchor).isActive = true
+        faceBookButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+    
+    func goToFB() {
+        let faceBookLoginViewController =  FaceBookLoginViewController()
+        //        messagesController.faceBookLoginViewController = self
+        present(faceBookLoginViewController, animated: true, completion: nil)
+    }
+    
+    func handleLoginRegister() {
+        getMe()
+        if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
+            handleLogin()
+        } else {
+            handleRegister()
+        }
+    }
+    
+    func handleLogin() {
+        guard let email = emailTextField.text, let password = passwordTextField.text else {
+            print("Forms is not valid")
+            return
+        }
+        FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
+            if error != nil {
+                print(error!)
+                return
+            }
+            // successfully logged in our user
+            self.messagesController?.fetchUserAndSetupNavBarTitle()
+            self.dismiss(animated: true, completion: nil)
+        })
+    }
+    
+    func getMe() {
+        if AccessToken.current != nil {
+            GraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).start({ (urlResponse, requestResult) in
+                switch requestResult {
+                case .success(let response):
+                    if let responseDictionary = response.dictionaryValue {
+                        let email = responseDictionary["email"] as? String
+                        self.user.email = email
+                        let name = responseDictionary["name"] as? String
+                        self.user.name = name
+                        let id = responseDictionary["id"] as? String
+                        self.user.id = id
+                        if let picture = responseDictionary["picture"] as? NSDictionary {
+                            if let data = picture["data"] as? NSDictionary{
+                                if let urlString = data["url"] as? String {
+                                    self.user.profileImageUrl = urlString
+                                }
+                            }
+                        }
+                    }
+                    self.emailTextField.text = self.user.email
+                    self.nameTextField.text = self.user.name
+                    
+                    if let url = self.user.profileImageUrl {
+                        self.profileImageView.loadImageUsingCasheWithUrlString(urlString: url)
+                    }
+                case .failed(let error):
+                    print(error)
+                }
+            })
+        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
