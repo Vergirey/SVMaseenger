@@ -29,7 +29,6 @@ class UserCell: UITableViewCell {
     
     private func setupNameAndProfileImages() {
         
-        
         if let id = message?.chatPartnerId() {
             let ref = FIRDatabase.database().reference().child("users").child(id)
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -63,11 +62,11 @@ class UserCell: UITableViewCell {
     
     let timeLabel: UILabel = {
         let label = UILabel()
-//        label.text = "HH:MM:SS"
+        //        label.text = "HH:MM:SS"
         label.font = UIFont.systemFont(ofSize: 13)
         label.textColor = UIColor.darkGray
         label.translatesAutoresizingMaskIntoConstraints = false
-
+        
         return label
     }()
     
