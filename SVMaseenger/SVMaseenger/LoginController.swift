@@ -11,7 +11,7 @@ import Firebase
 import FacebookLogin
 import FacebookCore
 
-class LoginController: UIViewController {
+class LoginController: UIViewController, LoginButtonDelegate {
     
     var messagesController: MessagesController?
     
@@ -21,6 +21,8 @@ class LoginController: UIViewController {
     var passwordTextFieldHeightAncor: NSLayoutConstraint?
     
     let user = User()
+    
+//    MARK: creat container
     
     let inputsContainerView: UIView = {
         let view = UIView()
@@ -39,24 +41,22 @@ class LoginController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        button.layer.cornerRadius = 5
+        button.layer.masksToBounds = true
         
         button.addTarget(self, action: #selector(handleLoginRegister), for: .touchUpInside)
         return button
     }()
     
-    let faceBookButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = UIColor(red: 80/255, green: 101/255, blue: 161/255, alpha: 1)
-        button.setTitle("FaceBook", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+    
+    let loginButton: LoginButton = {
+        let lB = LoginButton(readPermissions: [ .publicProfile, .userFriends, .email ])
+        lB.translatesAutoresizingMaskIntoConstraints = false
+        lB.layer.cornerRadius = 5
+        lB.layer.masksToBounds = true
         
-        button.addTarget(self, action: #selector(goToFB), for: .touchUpInside)
-        return button
+        return lB
     }()
-    
-    
     
     let nameTextField: UITextField = {
         let tf = UITextField()
@@ -101,11 +101,14 @@ class LoginController: UIViewController {
     
     lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.layer.cornerRadius = 5
+        imageView.layer.masksToBounds = true
         imageView.image = UIImage(named: "male")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectorProfileImageView)))
         imageView.isUserInteractionEnabled = true
+        
         
         return imageView
     }()
@@ -120,6 +123,7 @@ class LoginController: UIViewController {
         return sc
     }()
     
+//    MARK:
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -130,41 +134,23 @@ class LoginController: UIViewController {
         view.addSubview(loginRegisterButton)
         view.addSubview(profileImageView)
         view.addSubview(loginRegisterSegmentedControl)
-        view.addSubview(faceBookButton)
+        view.addSubview(loginButton)
         
         setupInputsContainerView()
         setupLoginRegisterButton()
         setupProfileImageView()
         setupLoginRegisterSegmentedControl()
-        setupfaceBookButton()
+        setupLoginButton()
+        
+        self.loginButton.delegate = self
         
         getMe()
+        
+        loginRegisterSegmentedControl.selectedSegmentIndex = 0
+        handleLoginRegisterChange()
     }
     
-    func handleLoginRegisterChange() {
-        let title = loginRegisterSegmentedControl.titleForSegment(at: (loginRegisterSegmentedControl.selectedSegmentIndex))
-        loginRegisterButton.setTitle(title, for: .normal)
-        
-        // change height of inputContainerView, but how???
-        inputContainerViewHightAncor?.constant = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 100 : 150
-        
-        // change height of nameTextField
-        nameTextFieldHeightAncor?.isActive = false
-        nameTextFieldHeightAncor = nameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 0 : 1/3)
-        
-        // nameTextField hidden if loginRegisterSegmentedControl == "Login"
-        nameTextField.isHidden = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? true : false
-        
-        nameTextFieldHeightAncor?.isActive = true
-        
-        emailTextFieldHeightAncor?.isActive = false
-        emailTextFieldHeightAncor = emailTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
-        emailTextFieldHeightAncor?.isActive = true
-        
-        passwordTextFieldHeightAncor?.isActive = false
-        passwordTextFieldHeightAncor = passwordTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
-        passwordTextFieldHeightAncor?.isActive = true
-    }
+//    MARK: Setup
     
     func setupLoginRegisterSegmentedControl() {
         // need x, y, wight, height constraints
@@ -241,21 +227,41 @@ class LoginController: UIViewController {
         loginRegisterButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
-    func setupfaceBookButton() {
-        faceBookButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        faceBookButton.topAnchor.constraint(equalTo: loginRegisterButton.bottomAnchor, constant: 12).isActive = true
-        faceBookButton.widthAnchor.constraint(equalTo: loginRegisterButton.widthAnchor).isActive = true
-        faceBookButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    func setupLoginButton() {
+        loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loginButton.topAnchor.constraint(equalTo: loginRegisterButton.bottomAnchor, constant: 12).isActive = true
+        loginButton.widthAnchor.constraint(equalTo: loginRegisterButton.widthAnchor).isActive = true
+        loginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
-    func goToFB() {
-        let faceBookLoginViewController =  FaceBookLoginViewController()
-        //        messagesController.faceBookLoginViewController = self
-        present(faceBookLoginViewController, animated: true, completion: nil)
+//    MARK: All function
+    
+    func handleLoginRegisterChange() {
+        let title = loginRegisterSegmentedControl.titleForSegment(at: (loginRegisterSegmentedControl.selectedSegmentIndex))
+        loginRegisterButton.setTitle(title, for: .normal)
+        
+        // change height of inputContainerView, but how???
+        inputContainerViewHightAncor?.constant = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 100 : 150
+        
+        // change height of nameTextField
+        nameTextFieldHeightAncor?.isActive = false
+        nameTextFieldHeightAncor = nameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 0 : 1/3)
+        
+        // nameTextField hidden if loginRegisterSegmentedControl == "Login"
+        nameTextField.isHidden = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? true : false
+        
+        nameTextFieldHeightAncor?.isActive = true
+        
+        emailTextFieldHeightAncor?.isActive = false
+        emailTextFieldHeightAncor = emailTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
+        emailTextFieldHeightAncor?.isActive = true
+        
+        passwordTextFieldHeightAncor?.isActive = false
+        passwordTextFieldHeightAncor = passwordTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
+        passwordTextFieldHeightAncor?.isActive = true
     }
     
     func handleLoginRegister() {
-        getMe()
         if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
             handleLogin()
         } else {
@@ -309,7 +315,35 @@ class LoginController: UIViewController {
                     print(error)
                 }
             })
+        } else {
+            self.user.email = ""
+            self.user.id = ""
+            self.user.name = ""
+            self.user.profileImageUrl = ""
+            
+            self.emailTextField.text = self.user.email
+            self.nameTextField.text = self.user.name
+            self.profileImageView.image = UIImage(named: "male")
         }
+    }
+    
+    /**
+     Called when the button was used to logout.
+     
+     - parameter loginButton: Button that was used to logout.
+     */
+    func loginButtonDidLogOut(_ loginButton: LoginButton) {
+        getMe()
+    }
+    
+    /**
+     Called when the button was used to login and the process finished.
+     
+     - parameter loginButton: Button that was used to login.
+     - parameter result:      The result of the login.
+     */
+    func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
+        getMe()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
