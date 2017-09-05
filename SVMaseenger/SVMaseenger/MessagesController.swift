@@ -27,6 +27,39 @@ class MessagesController: UITableViewController {
         checkIfUserLoggedIn()
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
+        
+        tableView.allowsMultipleSelectionDuringEditing = true
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+        guard let uid = FIRAuth.auth()?.currentUser?.uid else {
+            return
+        }
+        
+        let message = self.messages[indexPath.row]
+        
+        if let chatPartnerId = message.chatPartnerId() {
+            FIRDatabase.database().reference().child("user-messages").child(uid).child(chatPartnerId).removeValue(completionBlock: { (error, ref) in
+                
+                if error != nil {
+                    print("Failed to delete message:", error!)
+                    return
+                }
+                
+                self.messagesDictionary.removeValue(forKey: chatPartnerId)
+                self.attemptReloadOfTable()
+                
+//                // this is one way of updating the table, but its actually not that safe...
+//                self.messages.remove(at: indexPath.row)
+//                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                
+            })
+        } 
     }
     
     var messages = [Message]()
@@ -47,6 +80,15 @@ class MessagesController: UITableViewController {
                 self.fetchMessageWithMessageId(messageId: messageId)
                 
             }, withCancel: nil)
+            
+        }, withCancel: nil)
+        
+        ref.observe(.childRemoved, with: { (snapshot) in
+            print(snapshot.key)
+            print(self.messagesDictionary)
+            
+            self.messagesDictionary.removeValue(forKey: snapshot.key)
+            self.attemptReloadOfTable()
             
         }, withCancel: nil)
     }
