@@ -260,7 +260,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     func handleKeyboardDidShow() {
-        if messages.count > 0 {
+        if messages.count > 4 {
             let indexPath = IndexPath(item: messages.count - 1, section: 0)
             collectionView?.scrollToItem(at: indexPath, at: .top, animated: true)
         }
@@ -299,6 +299,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         cell.chatLogController = self
         
         let message = messages[indexPath.item]
+        
+        cell.message = message
+        
         cell.textView.text = message.text
         
         setupCell(cell: cell, message: message)
@@ -312,6 +315,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             cell.bubbleWidthAnchor?.constant = 200
             cell.textView.isHidden = true
         }
+        
+        cell.playButton.isHidden = message.videoUrl == nil
         
         return cell
     }
